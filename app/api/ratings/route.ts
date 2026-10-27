@@ -21,7 +21,7 @@ export async function POST(request:NextRequest){
  try{body=await request.json();}catch{return NextResponse.json({error:'Datos inválidos.'},{status:400});}
  if(!body || typeof body!=='object')return NextResponse.json({error:'Datos inválidos.'},{status:400});
  const {product_id,stars}=body as {product_id?:unknown;stars?:unknown};
- if(typeof product_id!=='string'||!uuid.test(product_id)||!Number.isInteger(stars)||Number(stars)<1||Number(stars)>5){
+ if(typeof product_id!=='string'||!uuid.test(product_id)||(typeof stars!=='number'||!Number.isInteger(stars))||stars<1||Number(stars)>5){
   return NextResponse.json({error:'Selecciona una valoración válida de 1 a 5 estrellas.'},{status:400});
  }
  const db=createClient(url,secretKey,{auth:{autoRefreshToken:false,persistSession:false}});
